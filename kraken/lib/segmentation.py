@@ -35,6 +35,7 @@ from shapely.validation import explain_validity
 from skimage import draw, filters
 from skimage.filters import sobel
 from cucim.skimage.filters import sato
+import cupy as cp
 from skimage.graph import MCP_Connect
 from skimage.measure import (approximate_polygon, label, regionprops,
                              subdivide_polygon)
@@ -317,8 +318,8 @@ def vectorize_lines(im: np.ndarray, threshold: float = 0.17, min_length=5,
     # split into baseline and separator map
     st_map = im[0]
     end_map = im[1]
-    bl_map = im[2]
-    bl_map = sato(bl_map, black_ridges=False, mode='constant')
+    bl_map = cp.asarray(im[2])
+    bl_map = cp.asnumpy(sato(bl_map, black_ridges=False, mode='constant'))
     bin_bl_map = bl_map > threshold
     # skeletonize
     line_skel = skeletonize(bin_bl_map)
