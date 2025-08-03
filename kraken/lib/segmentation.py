@@ -318,7 +318,7 @@ def vectorize_lines(im: np.ndarray, threshold: float = 0.17, min_length=5,
     # split into baseline and separator map
     st_map = im[0]
     end_map = im[1]
-    bl_map = cp.asarray(im[2])
+    bl_map = cp.asarray(im[2], dtype=cp.float32)
     bl_map = cp.asnumpy(sato(bl_map, black_ridges=False, mode='constant'))
     bin_bl_map = bl_map > threshold
     # skeletonize
